@@ -3,25 +3,27 @@
 <head>
     <title>Cüzdan Takip</title>
     <style>
-        /* 1. GENEL AYARLAR (Tuval Hazırlığı) */
+        /* 1. GENEL AYARLAR */
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern Yazı Tipi */
-            background: linear-gradient(135deg, #74ebd5, #ACB6E5); /* Renk Geçişli Arka Plan */
-            height: 100vh; /* Tüm ekranı kapla */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            height: 100vh;
             margin: 0;
             display: flex;
-            justify-content: center; /* Yatayda Ortala */
-            align-items: center; /* Dikeyde Ortala */
+            justify-content: center;
+            align-items: center;
         }
 
-        /* 2. ANA KASA (Uygulama Kutusu) */
+        /* 2. ANA KASA */
         .kasa { 
-            background: rgba(255, 255, 255, 0.9); /* Hafif Şeffaf Beyaz */
+            background: rgba(255, 255, 255, 0.9);
             width: 380px; 
             padding: 30px; 
-            border-radius: 20px; /* Kenarları Yuvarlat */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); /* 3D Gölge Efekti */
-            backdrop-filter: blur(10px); /* Buzlu Cam Efekti */
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            max-height: 90vh; /* Ekran küçükse taşmasın */
+            overflow-y: auto; /* Kaydırma çubuğu çıksın */
         }
 
         h2 { 
@@ -31,15 +33,14 @@
             font-weight: 600;
         }
         
-        /* 3. BAKİYE KUTUSU (Yeşil Alan) */
         .bakiye-kutu { 
-            background: linear-gradient(to right, #11998e, #38ef7d); /* Yeşil Geçiş */
+            background: linear-gradient(to right, #11998e, #38ef7d); 
             color: white; 
             padding: 25px; 
             text-align: center; 
             border-radius: 15px; 
             margin-bottom: 25px; 
-            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); /* Yeşil Gölge */
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); 
         }
         .bakiye-sayi { 
             font-size: 40px; 
@@ -48,43 +49,35 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
-        /* 4. GİRİŞ ALANLARI (Inputlar) */
         .giris-grubu { 
-            display: flex; /* Yan yana dizmek için */
-            gap: 10px; /* Aradaki boşluk */
+            display: flex; 
+            gap: 10px; 
             margin-bottom: 15px; 
         }
         
         input { 
             padding: 12px; 
-            border: 2px solid #eee; /* İnce gri çerçeve */
+            border: 2px solid #eee; 
             border-radius: 10px; 
             width: 100%; 
-            outline: none; /* Tıklayınca çıkan mavi çizgiyi kaldır */
-            transition: 0.3s; /* Animasyonlu geçiş */
+            outline: none; 
+            transition: 0.3s; 
         }
         select {
             padding: 12px; 
-            border: 2px solid #eee; /* İnce gri çerçeve */
+            border: 2px solid #eee; 
             border-radius: 10px;
             background: white;
-           cursor: pointer;
-           outline: none;
-           font-weight: bold;
+            cursor: pointer;
+            outline: none;
+            font-weight: bold;
         }
 
-        .gelir-madde {
-            border-left: 5px solid #2ecc71 !important;
-        }
-        .gider-madde {
-            border-left: 5px solid #ff4757 !important;
-        }
-        /* Tıklayınca çerçeve renk değiştirsin */
-        input:focus {
-            border-color: #38ef7d;
-        }
+        .gelir-madde { border-left: 5px solid #2ecc71 !important; }
+        .gider-madde { border-left: 5px solid #ff4757 !important; }
         
-        /* 5. EKLE BUTONU */
+        input:focus { border-color: #38ef7d; }
+        
         #ekleBtn { 
             width: 100%; 
             padding: 15px; 
@@ -95,38 +88,33 @@
             cursor: pointer; 
             font-size: 16px; 
             font-weight: bold;
-            transition: transform 0.1s; /* Basınca küçülme efekti için */
+            transition: transform 0.1s; 
         }
         
-        #ekleBtn:hover { 
-            background-color: #555; /* Üstüne gelince rengi aç */
-        }
+        #ekleBtn:hover { background-color: #555; }
+        #ekleBtn:active { transform: scale(0.98); }
 
-        #ekleBtn:active {
-            transform: scale(0.98); /* Tıklayınca hafifçe içe göçsün */
-        }
-
-        /* 6. LİSTE (Harcamalar) */
         #harcamaListesi { 
             margin-top: 25px; 
-            list-style: none; /* Madde işaretlerini kaldır */
+            list-style: none; 
             padding: 0; 
-            max-height: 200px; /* Liste çok uzarsa... */
-            overflow-y: auto; /* ...kaydırma çubuğu çıksın */
+            max-height: 200px; 
+            overflow-y: auto; 
         }
 
         #harcamaListesi li { 
             background: white; 
-            border-left: 5px solid #ff6b6b; /* Sol tarafa kırmızı çizgi */
+            border-left: 5px solid #ff6b6b; 
             margin-bottom: 10px; 
             padding: 15px; 
             border-radius: 8px;
             display: flex; 
-            justify-content: space-between; /* Yazıyı sola, fiyatı sağa it */
+            justify-content: space-between; 
+            align-items: center; /* Dikey ortalama */
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             font-weight: 500;
         }
-            .silBtn { 
+        .silBtn { 
             background-color:#ff4757;
             color: white;
             border: none;
@@ -136,11 +124,9 @@
             margin-left: 10px;
             font-size: 12px;
         }
-
-           .silBtn:hover {
-            background-color: #c0392b;
-        }
+        .silBtn:hover { background-color: #c0392b; }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -150,6 +136,10 @@
         <div class="bakiye-kutu">
             <div>Toplam Harcama</div>
             <div class="bakiye-sayi" id="toplamTutar">0 TL</div>
+        </div>
+        
+        <div style="width: 200px; margin: 0 auto 20px auto;">
+            <canvas id="benimGrafigim"></canvas>
         </div>
 
         <div class="giris-grubu">
@@ -163,51 +153,74 @@
 
         <button id="ekleBtn">Harcama Ekle</button>
 
-        <ul id="harcamaListesi">
-            </ul>
+        <ul id="harcamaListesi"></ul>
     </div>
 
     <script>
-            const adInput = document.getElementById('harcamaAdi');
-            const fiyatInput = document.getElementById('harcamaFiyat');
-            const turSecimi = document.getElementById('turSecimi');
-            const ekleBtn = document.getElementById('ekleBtn');
-            const harcamaListesi = document.getElementById('harcamaListesi');
-            const toplamTutar = document.getElementById('toplamTutar');
+        const adInput = document.getElementById('harcamaAdi');
+        const fiyatInput = document.getElementById('harcamaFiyat');
+        const turSecimi = document.getElementById('turSecimi');
+        const ekleBtn = document.getElementById('ekleBtn');
+        const harcamaListesi = document.getElementById('harcamaListesi');
+        const toplamTutar = document.getElementById('toplamTutar');
 
-             let harcamaDizisi = JSON.parse(localStorage.getItem('harcamalarim')) || [];
+        let harcamaDizisi = JSON.parse(localStorage.getItem('harcamalarim')) || [];
+        let mevcutGrafik = null; // Grafik hafızası
 
-             function listeyiEkranaBas() {
-                let toplamPara = 0;
-                harcamaListesi.innerHTML = '';
+        // --- GRAFİK ÇİZME FONKSİYONU (Eksikti, ekledim) ---
+        function grafikCiz(gelir, gider) {
+            const ctx = document.getElementById('benimGrafigim');
+            if (mevcutGrafik) {
+                mevcutGrafik.destroy();
+            }
+            mevcutGrafik = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Gelir (+)', 'Gider (-)'],
+                    datasets: [{
+                        data: [gelir, gider],
+                        backgroundColor: ['#3498db', '#e67e22'],
+                        borderWidth: 0
+                    }]
+                }
+            });
+        }
 
-                harcamaDizisi.forEach(function(harcama, sira) {
+        // --- LİSTELEME FONKSİYONU ---
+        function listeyiEkranaBas() {
+            let toplamPara = 0;
+            let toplamGelir = 0;
+            let toplamGider = 0;
+            
+            harcamaListesi.innerHTML = '';
 
+            harcamaDizisi.forEach(function(harcama, sira) {
+                // Hesaplamalar
                 if (harcama.tur === 'gelir') {
-                    toplamPara = toplamPara + harcama.fiyat;  
-
+                    toplamPara += harcama.fiyat;
+                    toplamGelir += harcama.fiyat;
                 } else {
-                    toplamPara = toplamPara - harcama.fiyat;
+                    toplamPara -= harcama.fiyat;
+                    toplamGider += harcama.fiyat;
                 }
 
+                // HTML Oluşturma
                 const yeniMadde = document.createElement('li');
-                let isaret = "-";
-                if (harcama.tur === "gelir") {
-                  isaret = "+"; 
-                }
-                yeniMadde.innerText = harcama.ad + " " + isaret + " " + harcama.fiyat + " TL";
+                let isaret = harcama.tur === "gelir" ? "+" : "-";
+                
+                yeniMadde.innerText = `${harcama.ad} ${isaret} ${harcama.fiyat} TL`;
+                
                 if (harcama.tur === 'gelir') {
                     yeniMadde.classList.add('gelir-madde');
                 } else {
                     yeniMadde.classList.add('gider-madde');
                 }           
 
+                // Sil Butonu
                 const silBtn = document.createElement('button');
                 silBtn.innerText = 'Sil';
                 silBtn.classList.add('silBtn');
-            
                 
-
                 silBtn.addEventListener('click', function() {
                     harcamaDizisi.splice(sira, 1);
                     localStorage.setItem('harcamalarim', JSON.stringify(harcamaDizisi));
@@ -216,58 +229,45 @@
 
                 yeniMadde.appendChild(silBtn); 
                 harcamaListesi.appendChild(yeniMadde);
-                });
+            });
 
-                toplamTutar.innerText = toplamPara + ' TL'; 
-                localStorage.setItem("cuzdanbakiyesi", toplamPara);
+            // Toplamları Yaz
+            toplamTutar.innerText = toplamPara + ' TL'; 
+            localStorage.setItem("cuzdanbakiyesi", toplamPara);
 
-                }
-
-                listeyiEkranaBas();
-
-                    const yeniVeri ={
-                        tur: turSecimi.value,
-                        ad: adInput.value,
-                        fiyat: Number(fiyatInput.value)
-                    };
-
-                    harcamaDizisi.push(yeniVeri);
-                    localStorage.setItem('harcamalarim', JSON.stringify(harcamaDizisi));
-                    listeyiEkranaBas();
-
-                    adInput.value = '';
-                    fiyatInput.value = '';
-
-    ekleBtn.addEventListener("click", function() {
-        
-        // 1. Elemanları o an, taze taze bulalım (Hata riskini bitirir)
-        const secilenTur = document.getElementById("turSecimi").value;
-        const girilenAd = document.getElementById("harcamaAdi").value;
-        const girilenFiyat = document.getElementById("harcamaFiyat").value;
-
-        // 2. Güvenlik Kontrolü: Boşsa işlem yapma!
-        if (girilenAd === "" || girilenFiyat === "") {
-            alert("Lütfen boş alanları doldurun!");
-            return; // Robotu durdur
+            // Grafiği Güncelle
+            grafikCiz(toplamGelir, toplamGider);
         }
 
-        // 3. Paketleme
-        const yeniVeri = { 
-            tur: secilenTur, 
-            ad: girilenAd, 
-            fiyat: Number(girilenFiyat)
-        };
+        // --- İLK AÇILIŞ ---
+        listeyiEkranaBas();
 
-        // 4. Kayıt ve Temizlik
-        harcamaDizisi.push(yeniVeri);
-        localStorage.setItem("harcamalarim", JSON.stringify(harcamaDizisi));
-        
-        listeyiEkranaBas(); // Listeyi güncelle
+        // --- EKLEME BUTONU ---
+        ekleBtn.addEventListener("click", function() {
+            const secilenTur = document.getElementById("turSecimi").value;
+            const girilenAd = document.getElementById("harcamaAdi").value;
+            const girilenFiyat = document.getElementById("harcamaFiyat").value;
 
-        // Kutuları boşalt
-        document.getElementById("harcamaAdi").value = "";
-        document.getElementById("harcamaFiyat").value = "";
-    });
+            if (girilenAd === "" || girilenFiyat === "") {
+                alert("Lütfen boş alanları doldurun!");
+                return;
+            }
 
-</script>       
+            const yeniVeri = { 
+                tur: secilenTur, 
+                ad: girilenAd, 
+                fiyat: Number(girilenFiyat)
+            };
+
+            harcamaDizisi.push(yeniVeri);
+            localStorage.setItem("harcamalarim", JSON.stringify(harcamaDizisi));
+            
+            listeyiEkranaBas();
+
+            // Kutuları boşalt
+            document.getElementById("harcamaAdi").value = "";
+            document.getElementById("harcamaFiyat").value = "";
+        });
+    </script>       
+</body>
 </html>
